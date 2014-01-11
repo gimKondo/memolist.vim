@@ -82,7 +82,11 @@ function! memolist#list()
   if get(g:, 'memolist_vimfiler', 0) != 0
     exe "VimFiler" g:memolist_vimfiler_option s:escarg(g:memolist_path)
   elseif get(g:, 'memolist_unite', 0) != 0
-    exe "Unite" g:memolist_unite_source.':'.s:escarg(g:memolist_path) g:memolist_unite_option
+    if has('win32')
+      exe "Unite" g:memolist_unite_source.':'.escape(g:memolist_path, ' \') g:memolist_unite_option
+    else
+      exe "Unite" g:memolist_unite_source.':'.s:escarg(g:memolist_path) g:memolist_unite_option
+    endif
   else
     exe "e" s:escarg(g:memolist_path)
   endif
